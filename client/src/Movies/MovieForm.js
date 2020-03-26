@@ -3,9 +3,6 @@ import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 
 const MovieForm = props => {
-    
-    const history = useHistory();
-    const { id } = useParams();
 
     const [movieUpdate, setMovieUpdate] = useState({
         id: '',
@@ -14,6 +11,9 @@ const MovieForm = props => {
         metascore: '',
         stars: []
     });
+
+    const history = useHistory();
+    const { id } = useParams();
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/movies/${id}`)
@@ -30,18 +30,17 @@ const MovieForm = props => {
         });
     }
 
+    const changeHandlerArray = e => {
+        setMovieUpdate({
+            ...movieUpdate,
+            stars: [...e.target.value.split(",")]
+        });
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
         axios.put(`http://localhost:5000/api/movies/${id}`, movieUpdate)
-            .then(res => {
-                console.log("Handle Submit", res.data);
-                setMovieUpdate({
-                    id: '',
-                    title: '',
-                    director: '',
-                    metascore: '',
-                    stars: []
-                });
+            .then(() => {
                 history.push('/');
             })
             .catch(err => console.log(err));
@@ -76,7 +75,7 @@ const MovieForm = props => {
                 <input 
                     type="text"
                     name="stars"
-                    onChange={changeHandler}
+                    onChange={changeHandlerArray}
                     placeholder="Stars"
                     value={movieUpdate.stars}
                 />
