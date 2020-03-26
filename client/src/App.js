@@ -38,7 +38,7 @@ const App = () => {
       </Route>
 
       <Route exact path="/update-movie/:id">
-        <MovieForm movies={movieList} getMovieList={getMovieList}/>
+        <MovieForm movies={movieList} setMovieList={setMovieList}/>
       </Route>
     </>
   );
